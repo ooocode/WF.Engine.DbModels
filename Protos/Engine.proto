@@ -1,0 +1,91 @@
+// limitations under the License.
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+option java_package = "com.wf.engine";
+option java_outer_classname = "ProcessGrpcProto";
+
+package Engine;
+
+
+service ProcessService {
+    //启动处理实例
+    rpc StartProcess (StartProcessRequest) returns (StartProcessReply) {}
+
+    //完成用户任务
+    rpc CompleteUserTask(CompleteTaskRequest) returns (CompleteTaskReply){}
+
+    //删除活动实例
+    rpc DeleteActivityInstance(DeleteActivityInstanceRequest) returns (google.protobuf.Empty){}
+
+    //完成外部任务
+    rpc CompleteExternalTask(CompleteExternalTaskRequest) returns (google.protobuf.Empty){}
+
+    //取消活动实例并启动一个活动实例
+    rpc CancelActivityInstancesAndStartOneActivity(CancelActivityInstancesAndStartOneActivityRequest) returns (google.protobuf.Empty){}
+}
+
+message StartProcessRequest {
+    //用户Id
+    string AuthenticatedUserId = 1;
+
+    //处理定义key
+    string ProcessDefinitionKey = 2;
+
+    //业务编号，唯一
+    string BusinessKey = 3;
+
+    //全局变量
+    map<string,bytes> Variables = 4;
+
+    //是否是首次创建
+    bool IsFirstUserTask = 5;
+
+    
+   //完成用户任务回调
+   string CompleteUserTaskCallbackUri = 6;
+
+   //服务任务回调
+   string ServiceTaskCallbackUri = 7;
+}
+
+message StartProcessReply {
+    string ProcessInstanceId = 1;
+    repeated string NextUserTaskIds = 2;
+}
+
+
+message CompleteTaskRequest{
+    string taskId = 1;
+    map<string,bytes> variables = 2;
+    //核心附加数据
+    string coreAttach = 3;
+    //自定义附加数据
+    string customAttach = 4;
+}
+
+message CompleteTaskReply{
+    repeated string nextTaskIds = 1;
+}
+
+message DeleteActivityInstanceRequest{
+    string ActivityInstanceId = 1;
+}
+
+message CompleteExternalTaskRequest{
+    string ExternalTaskId = 1;
+    string WorkerId = 2;
+    map<string,bytes> Variables = 3;
+    map<string,bytes> LocalVariables = 4;
+}
+
+message CancelActivityInstancesAndStartOneActivityRequest{
+    string processInstanceId = 1;
+    repeated string activityInstanceIds = 2;
+    string activityIdOfstartBeforeActivity = 3;
+    string assignee = 4;
+}
