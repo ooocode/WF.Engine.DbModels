@@ -35,8 +35,8 @@ builder.Services.AddEngineUserTaskJobsEvent<MyCompleteUserTaskEvent>();
 
 ## 3、依赖注入接口
 ```csharp
-引擎数据库： EngineDbContext engineDbContext
-引擎数据库工厂： IDbContextFactory<EngineDbContext> dbContextFactory
+引擎数据库（导出Camunda所有表）： EngineDbContext engineDbContext
+引擎数据库工厂（导出Camunda所有表）： IDbContextFactory<EngineDbContext> dbContextFactory
 Grpc客户端：ProcessService.ProcessServiceClient processServiceClient
 ```
 
