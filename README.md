@@ -1,6 +1,6 @@
 # NetCore
 
-## ASP.Net Core 6.0/7.0
+## 支持 ASP.Net Core 6.0/7.0
 
 ## 安装Nuget包 "WF.Engine.DbModels"
 
@@ -30,9 +30,45 @@ builder.Services.AddEngineUserTaskJobsEvent<MyCompleteUserTaskEvent>();
 
 ```
 
-## 查询数据库
+## 依赖注入接口
 ```csharp
-依赖注入： EngineDbContext engineDbContext
-依赖注入： IDbContextFactory<EngineDbContext> dbContextFactory
+引擎数据库： EngineDbContext engineDbContext
+引擎数据库工厂： IDbContextFactory<EngineDbContext> dbContextFactory
 Grpc客户端：ProcessService.ProcessServiceClient processServiceClient
+```
+
+## 查询数据库示例(EF Core Linq)
+```csharp
+        /// <summary>
+        /// 获取待办任务数量
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet("todo-count")]
+        public async Task<int> GetTodoCount(string userId)
+        {
+            var list = await engineDbContext.ActRuTasks.AsNoTracking()
+                .CountAsync(e => e.Assignee == userId);
+
+            return list;
+        }
+```
+
+### 发起流程和完成任务（Grpc）
+```csharp
+            //发起流程
+            var req = new StartProcessRequest
+            {
+                AuthenticatedUserId = value.UserId,
+                BusinessKey = Guid.NewGuid().ToString(),
+                ProcessDefinitionKey = value.ProcessDefinitionKey
+            };
+            StartProcessReply res = await processServiceClient.StartProcessAsync(req);
+
+            //完成任务
+            var body = new CompleteTaskRequest
+            {
+                TaskId = value.UserTaskId,
+            };
+            var res = await processServiceClient.CompleteUserTaskAsync(body);
 ```
