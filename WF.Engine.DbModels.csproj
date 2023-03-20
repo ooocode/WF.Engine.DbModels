@@ -5,6 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <!--<Nullable>enable</Nullable>-->
 	<VersionPrefix>1.0.18</VersionPrefix>
+	<PackageProjectUrl>https://github.com/ooocode/WF.Engine.DbModels</PackageProjectUrl>
+	<Description>Camunda引擎，内部项目使用，请勿下载</Description>
   </PropertyGroup>
 
   <ItemGroup>
