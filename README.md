@@ -1,5 +1,10 @@
 # NetCore
 
+## ASP.Net Core 6.0/7.0
+
+## 安装Nuget包 "WF.Engine.DbModels"
+
+## 启动代码
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,4 +28,11 @@ builder.Services.AddEngineUserTaskJobs(TimeSpan.FromSeconds(60), true);
 builder.Services.AddEngineUserTaskJobsEvent<MyCompleteUserTaskEvent>();
 
 
+```
+
+## 查询数据库
+```csharp
+依赖注入： EngineDbContext engineDbContext
+依赖注入： IDbContextFactory<EngineDbContext> dbContextFactory
+Grpc客户端：ProcessService.ProcessServiceClient processServiceClient
 ```
