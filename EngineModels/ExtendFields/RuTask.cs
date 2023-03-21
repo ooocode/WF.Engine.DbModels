@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WF.Engine.DbModels.EngineModels.ExtendFields
@@ -28,6 +29,7 @@ namespace WF.Engine.DbModels.EngineModels.ExtendFields
         /// 刚创建的？处于第一个用户节点，没有流转
         /// </summary>
         [Column("is_first_user_task")]
+        [DefaultValue(false)]
         public bool? IsJustCreated { get; set; }
 
 
